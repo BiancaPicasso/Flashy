@@ -50,21 +50,24 @@ function CardControls({ docId }) {
   };
 
   return (
-    <div>
-    <div className='card-controls'>
-      <EditIcon className='edit-icon' onClick={handleEditClick} />
-      <VolumeUpIcon className='speak-icon' onClick={handleSpeakClick}/>
-      {starred ? <StarIcon className='star-icon' onClick={handleStarClick}/> : <StarBorderIcon className='star-border-icon' onClick={handleStarClick}/> }
-    </div>
+    <div className={`card-controls-wrapper ${showModal ? 'faded' : ''}`}>
+      <div className='card-controls'>
+        <EditIcon className='edit-icon' onClick={handleEditClick} />
+        <VolumeUpIcon className='speak-icon' onClick={handleSpeakClick} />
+        {starred ? <StarIcon className='star-icon' onClick={handleStarClick} /> : <StarBorderIcon className='star-border-icon' onClick={handleStarClick} />}
+      </div>
       {showModal && (
-       <EditNoteModal 
-          docId={docId} 
-          handleExitModal={handleExitModal}
-          onUpdate={handleUpdate}
-       />
+        <>
+          <div className="overlay" onClick={handleExitModal}></div>
+          <EditNoteModal
+            docId={docId}
+            handleExitModal={handleExitModal}
+            onUpdate={handleUpdate}
+          />
+        </>
       )}
     </div>
-  )
+  );
 }
 
 export default CardControls; 

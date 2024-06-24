@@ -32,15 +32,16 @@ function EditNoteModal({ docId, handleExitModal, onUpdate }) {
   return (
     <div className='edit-modal' onClick={(e) => e.stopPropagation()}>
       <form onSubmit={updateForm}>
-        <button type="button" className='modal-exit-button'onClick={handleExitModal}>X</button>
-        <header className='modal-header'>Edit</header>
-        <br />
-        <textarea className="modal-line-1" name='modal-line-1' defaultValue={flashcard.side1}></textarea>
-        <br />
-        <textarea className="modal-line-2" name='modal-line-2' defaultValue={flashcard.side2}></textarea>
-        <br />
-        <button type="button">Delete</button>
-        <button type='submit'>Save</button>
+        <button type="button" className='modal-exit-button' onClick={handleExitModal}>X</button>
+        <div className='modal-editing'>
+          <h3 className='modal-header'>Edit</h3>
+          <textarea className="modal-line-1" name='modal-line-1' defaultValue={flashcard.side1}></textarea>
+          <textarea className="modal-line-2" name='modal-line-2' defaultValue={flashcard.side2}></textarea>
+        </div>
+        <div className='modal-bottom-buttons'>
+          <button className='delete-modal-button' type="button">Delete</button>
+          <button className='save-modal-button' type='submit'>Save</button>
+        </div>
       </form>
     </div>
   )
