@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import NoteModal from './NoteModal';
 import { useFlashcard } from '../contexts/FlashcardContext';
-import EditNoteModal from './EditNoteModal';
 import EditIcon from '@mui/icons-material/Edit';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -12,13 +12,9 @@ function CardControls({ docId }) {
   const [starred, setStarred] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const [question, setQuestion] = useState(flashcard.side1);
-  const [answer, setAnswer] = useState(flashcard.side2);
-
   const handleEditClick = (e) => {
     e.stopPropagation();
     setShowModal(true);
-
   }
   const handleSpeakClick = (e) => {
     e.stopPropagation();
@@ -36,17 +32,12 @@ function CardControls({ docId }) {
     setShowModal(prevShowModal => !prevShowModal);
   }
 
-  const handleUpdate = (id, updateData) => {
-    if (id === docId) {
-      setQuestion(updateData.side1);
-      setAnswer(updateData.side2);
-
-      // Update the flashcards in context
-      const updatedFlashcards = flashcards.map(fc =>
-        fc.docID === id ? { ...fc, side1: updateData.side1, side2: updateData.side2 } : fc
-      );
-      setFlashcards(updatedFlashcards);
-    }
+  const handleUpdate = (id, updatedCard) => {
+    const updatedFlashcards = flashcards.map(fc =>
+      fc.docID === id ? { ...fc, ...updatedCard } : fc
+    );
+    setFlashcards(updatedFlashcards);
+    setShowModal(false);
   };
 
   return (
@@ -59,10 +50,12 @@ function CardControls({ docId }) {
       {showModal && (
         <>
           <div className="overlay" onClick={handleExitModal}></div>
-          <EditNoteModal
+          <NoteModal
+            mode="edit"
             docId={docId}
-            handleExitModal={handleExitModal}
-            onUpdate={handleUpdate}
+            initialData={flashcard}
+            onClose={() => setShowModal(false)}
+            onSave={handleUpdate}
           />
         </>
       )}

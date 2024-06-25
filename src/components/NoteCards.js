@@ -1,23 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useFlashcard } from '../contexts/FlashcardContext';
 import Note from './Note';
-import { fetchFlashcards } from '../services/flashcardService';
-import { FlashcardProvider, useFlashcard } from '../contexts/FlashcardContext';
 
 function NoteCards() {
-  const { flashcards, setFlashcards } = useFlashcard();
-
-  useEffect(() => {
-    const getFlashcards = async () => {
-      try {
-        const data = await fetchFlashcards();
-        console.log('Fetched flashcards:', data);
-        setFlashcards(data);
-      } catch (error) {
-        console.error('Error fetching flashcards:', error);
-      }
-    };
-    getFlashcards();
-  }, [setFlashcards]);
+  const { flashcards } = useFlashcard();
 
   return (
     <div>
@@ -33,10 +19,4 @@ function NoteCards() {
   );
 }
 
-const NoteCardsWithProvider = () => (
-  <FlashcardProvider>
-    <NoteCards />
-  </FlashcardProvider>
-);
-
-export default NoteCardsWithProvider;
+export default NoteCards;
