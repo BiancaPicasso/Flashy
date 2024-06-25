@@ -1,30 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { doc, updateDoc, collection, addDoc } from 'firebase/firestore';
+import { doc, updateDoc, collection, addDoc, deleteDoc } from 'firebase/firestore';
+import { useFlashcard } from '../contexts/FlashcardContext';
 import db from '../firebase';
 
-function NoteModal({ mode, initialData, onClose, onSave }) {
+function NoteModal({ mode, noteInfo, onClose, onSave }) {
+  const { flashcards, setFlashcards } = useFlashcard();
+
   const [side1, setSide1] = useState('');
   const [side2, setSide2] = useState('');
 
   useEffect(() => {
-    if (initialData) {
-      setSide1(initialData.side1);
-      setSide2(initialData.side2);
+    if (noteInfo) {
+      setSide1(noteInfo.side1);
+      setSide2(noteInfo.side2);
     }
-  }, [initialData]);
+  }, [noteInfo]);
 
   const handleSave = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (mode === 'edit' && initialData.docID) {
-      const noteRef = doc(db, 'flashcards', initialData.docID);
+    if (mode === 'edit' && noteInfo.docID) {
+      const noteRef = doc(db, 'flashcards', noteInfo.docID);
       try {
         await updateDoc(noteRef, {
           side1,
           side2
         });
-        onSave(initialData.docID, { side1, side2 });
+        onSave(noteInfo.docID, { side1, side2 });
       } catch (error) {
         console.error("Error updating document: ", error);
       }
@@ -41,6 +44,20 @@ function NoteModal({ mode, initialData, onClose, onSave }) {
     }
 
     onClose();
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+      try {
+        await deleteDoc(doc(db, 'flashcards', noteInfo.docID));
+        const updatedFlashcards = flashcards.filter(fc => fc.docID !== noteInfo.docID);
+        setFlashcards(updatedFlashcards);
+        onClose();
+      } catch (error) {
+        console.error("Error deleting document: ", error);
+      }
   };
 
   return (
@@ -63,7 +80,14 @@ function NoteModal({ mode, initialData, onClose, onSave }) {
           />
         </div>
         <div className='modal-bottom-buttons'>
-          {mode === 'edit' && <button className='delete-modal-button' type="button">Delete</button>}
+          {mode === 'edit' && 
+            <button 
+              className='delete-modal-button' 
+              type="button" 
+              onClick={handleDelete}
+            >
+              Delete
+            </button>}
           <button className='save-modal-button' type='submit'>Save</button>
         </div>
       </form>

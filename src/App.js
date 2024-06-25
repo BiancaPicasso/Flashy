@@ -9,8 +9,8 @@ function App() {
     <div className="App">
       <Title />
       <FlashcardProvider>
-        <CreateCard />
         <NoteCards />
+        <CreateCard />
       </FlashcardProvider>
     </div>
   );
