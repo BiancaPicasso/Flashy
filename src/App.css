@@ -56,10 +56,10 @@ body {
 }
 
 /* Modal */
-.edit-modal {
-  position: absolute;
-  top: 10px;
-  left: 20%;
+.modal {
+  position: fixed;
+  top: 9%;
+  left: 30%;
   transform: translateX(-50%, -60%);
   padding: 1rem;
   border-radius: 5%;
