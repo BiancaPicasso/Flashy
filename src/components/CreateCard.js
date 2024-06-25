@@ -13,11 +13,21 @@ const CreateCard = () => {
 
   return (
     <div>
-      <button type='button' onClick={() => setShowModal(true)}>+</button>
+      <button 
+        type='button' 
+        onClick={() => setShowModal(true)}
+        className='create-note-button'
+      >
+        +
+      </button>
       {showModal && (
         <>
           <div className="overlay" onClick={() => setShowModal(false)}></div>
-          <NoteModal mode="create" onClose={() => setShowModal(false)} onSave={handleSave} />
+          <NoteModal 
+            mode="create" 
+            onClose={() => setShowModal(false)} 
+            onSave={handleSave} 
+          />
         </>
       )}
     </div>

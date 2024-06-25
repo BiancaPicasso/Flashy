@@ -53,7 +53,7 @@ function CardControls({ docId }) {
           <NoteModal
             mode="edit"
             docId={docId}
-            initialData={flashcard}
+            noteInfo={flashcard}
             onClose={() => setShowModal(false)}
             onSave={handleUpdate}
           />
