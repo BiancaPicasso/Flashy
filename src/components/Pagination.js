@@ -12,9 +12,21 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
 
   return (
     <div className='pagination'>
-      <button type="button" onClick={handlePrevPage} disabled={currentPage === 0}>-</button>
+      <button 
+        type="button" 
+        onClick={handlePrevPage} 
+        disabled={currentPage === 0}
+      >
+        -
+      </button>
       <p>{currentPage + 1}/{totalPages}</p>
-      <button type="button" onClick={handleNextPage}disabled={currentPage === totalPages - 1}>+</button>
+      <button 
+        type="button" 
+        onClick={handleNextPage}
+        disabled={currentPage === totalPages - 1}
+      >
+        +
+      </button>
     </div>
   );
 };
