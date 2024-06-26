@@ -4,6 +4,8 @@ import { useSpeechSynthesis } from 'react-speech-kit';
 import { doc, updateDoc } from 'firebase/firestore';
 import db from '../firebase';
 import NoteModal from './NoteModal';
+import AIModal from './AIModal';
+import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -13,6 +15,7 @@ function CardControls({ docId, front }) {
   const { flashcards, setFlashcards } = useFlashcard();
   const { speak } = useSpeechSynthesis();
   const [showModal, setShowModal] = useState(false);
+  const [showAIModal, setShowAIModal] = useState(false);
 
   const flashcard = flashcards?.find(fc => fc.docID === docId);
  
@@ -56,12 +59,38 @@ function CardControls({ docId, front }) {
     setShowModal(false);
   };
 
+  const handleAIAPI = (e) => {
+    e.stopPropagation();
+    setShowAIModal(!showAIModal);
+  }
+
+  const handleCloseAIModal = (e) => {
+    if (e.target.className === 'ai-modal-overlay') {
+      setShowAIModal(false);
+    }
+  }
+
   return (
     <div className={`card-controls-wrapper ${showModal ? 'faded' : ''}`}>
       <div className='card-controls'>
-        <EditIcon className='edit-icon' onClick={handleEditClick} />
-        <VolumeUpIcon className='speak-icon' onClick={handleSpeakClick} />
-        {flashcard.starred ? <StarIcon className='star-icon' onClick={handleStarClick} /> : <StarBorderIcon className='star-border-icon' onClick={handleStarClick} />}
+        <div className='left-icons'>
+          {!front && (
+            <button className='explain-button' onClick={handleAIAPI}>
+              <AutoAwesomeOutlinedIcon className='explain-icon' />
+              <span className='bold'>Explain this</span>
+          </button>
+          )}
+          {showAIModal && (
+            <div className="ai-modal-overlay" onClick={handleCloseAIModal}>
+            <AIModal docId={docId} />
+            </div>
+          )}
+        </div>
+        <div className='right-icons'>
+          <EditIcon className='edit-icon' onClick={handleEditClick} />
+          <VolumeUpIcon className='speak-icon' onClick={handleSpeakClick} />
+          {flashcard.starred ? <StarIcon className='star-icon' onClick={handleStarClick} /> : <StarBorderIcon className='star-border-icon' onClick={handleStarClick} />}
+        </div>
       </div>
       {showModal && (
         <>
