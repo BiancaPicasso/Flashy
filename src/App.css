@@ -47,14 +47,61 @@ body {
 
 /* Card controls */
 .card-controls {
+  display: flex;
+  justify-content: space-between;
   position: absolute;
   top: 20px;
   right: 20px;
+  left: 20px;
   cursor: pointer;
 }
 
-.card-controls > *:not(:last-child) {
+.right-icons > *:not(:last-child) {
   margin-right: 10px;
+}
+
+
+.explain-button {
+  display: flex;
+  align-items: center;
+  background-color: #2e3856;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  padding: 7px 5px;
+  cursor: pointer;
+}
+
+.bold {
+  font-weight: bold;
+  margin-right: 2px;
+}
+
+.explain-icon {
+  margin-right: 10px; 
+}
+
+.explain-button:hover {
+  background-color: #586380;
+}
+
+.ai-modal {
+  background: #2e3856;
+  border-radius: 10px;
+  padding: 20px;
+  z-index: 100;
+}
+
+.ai-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(46, 56, 86, 0.5);
+  z-index: 99;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Modal */

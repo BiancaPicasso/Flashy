@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import CardControls from './CardControls';
 import { useFlashcard } from '../contexts/FlashcardContext';
+import CardControls from './CardControls';
+
 
 function Note ({ docId }) {
   const { flashcards } = useFlashcard();
-  const flashcard = flashcards?.find(fc => fc.docID === docId);
   const [front, setFront] = useState(true);
+  
+  const flashcard = flashcards?.find(fc => fc.docID === docId);
 
   if (!flashcard) return null;
 
