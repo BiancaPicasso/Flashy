@@ -17,7 +17,7 @@ function Note ({ docId }) {
 
   return (
     <div className="notecard" onClick={handleCardClick}>
-      <CardControls docId={docId} />
+      <CardControls docId={docId} front={front}/>
       {front ? <p>{flashcard.side1}</p> : <p>{flashcard.side2}</p>}
     </div>
   );
