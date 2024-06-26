@@ -8,7 +8,6 @@ function NoteCards() {
   const { flashcards } = useFlashcard();
   const [currentPage, setCurrentPage] = useState(0);
 
-
   const totalPages = flashcards.length;
 
   const handlePageChange = (newPage) => {
@@ -22,8 +21,6 @@ function NoteCards() {
         <Note 
           key={flashcards[currentPage].docID} 
           docId={flashcards[currentPage].docID} 
-          side1={flashcards[currentPage].side1} 
-          side2={flashcards[currentPage].side2} 
         />
         )}
         <CreateCard className="create-card"/>

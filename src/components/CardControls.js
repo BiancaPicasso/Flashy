@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { doc, updateDoc } from 'firebase/firestore';
+import db from '../firebase';
 import NoteModal from './NoteModal';
 import { useFlashcard } from '../contexts/FlashcardContext';
 import EditIcon from '@mui/icons-material/Edit';
@@ -9,7 +11,6 @@ import StarIcon from '@mui/icons-material/Star'
 function CardControls({ docId }) {
   const { flashcards, setFlashcards } = useFlashcard();
   const flashcard = flashcards?.find(fc => fc.docID === docId);
-  const [starred, setStarred] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const handleEditClick = (e) => {
@@ -20,10 +21,22 @@ function CardControls({ docId }) {
     e.stopPropagation();
     console.log('hi');
   }
-  const handleStarClick = (e) => {
+  
+  const handleStarClick = async (e) => {
     e.stopPropagation();
-    setStarred(prevStar => !prevStar)
-  }
+
+    const newStarredStatus = !flashcard.starred;
+    const noteRef = doc(db, 'flashcards', docId);
+    
+    await updateDoc(noteRef, {
+      starred: newStarredStatus
+    });
+
+    const updatedFlashcards = flashcards.map(fc =>
+      fc.docID === docId ? { ...fc, starred: newStarredStatus } : fc
+    );
+    setFlashcards(updatedFlashcards);
+  };
 
   const handleExitModal = (e) => {
     if (e) {
@@ -45,7 +58,7 @@ function CardControls({ docId }) {
       <div className='card-controls'>
         <EditIcon className='edit-icon' onClick={handleEditClick} />
         <VolumeUpIcon className='speak-icon' onClick={handleSpeakClick} />
-        {starred ? <StarIcon className='star-icon' onClick={handleStarClick} /> : <StarBorderIcon className='star-border-icon' onClick={handleStarClick} />}
+        {flashcard.starred ? <StarIcon className='star-icon' onClick={handleStarClick} /> : <StarBorderIcon className='star-border-icon' onClick={handleStarClick} />}
       </div>
       {showModal && (
         <>
