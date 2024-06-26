@@ -1,20 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFlashcard } from '../contexts/FlashcardContext';
 import Note from './Note';
+import CreateCard from './CreateCard';
+import Pagination from './Pagination';
 
 function NoteCards() {
   const { flashcards } = useFlashcard();
+  const [currentPage, setCurrentPage] = useState(0);
 
+
+  const totalPages = flashcards.length;
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+ 
   return (
-    <div>
-      {flashcards.map((flashcard) => (
+    <div className='note-stack'>
+      {flashcards.length > 0 && (
         <Note 
-          key={flashcard.docID} 
-          docId={flashcard.docID} 
-          side1={flashcard.side1} 
-          side2={flashcard.side2} 
+          key={flashcards[currentPage].docID} 
+          docId={flashcards[currentPage].docID} 
+          side1={flashcards[currentPage].side1} 
+          side2={flashcards[currentPage].side2} 
         />
-      ))}
+        )}
+        <CreateCard className="create-card"/>
+      <Pagination 
+        currentPage={currentPage} 
+        totalPages={totalPages} 
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }

@@ -10,7 +10,6 @@ function App() {
       <Title />
       <FlashcardProvider>
         <NoteCards />
-        <CreateCard />
       </FlashcardProvider>
     </div>
   );
