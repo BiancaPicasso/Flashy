@@ -1,27 +1,30 @@
 import React, { useState } from 'react';
+import { useFlashcard } from '../contexts/FlashcardContext';
+import { useSpeechSynthesis } from 'react-speech-kit';
 import { doc, updateDoc } from 'firebase/firestore';
 import db from '../firebase';
 import NoteModal from './NoteModal';
-import { useFlashcard } from '../contexts/FlashcardContext';
 import EditIcon from '@mui/icons-material/Edit';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star'
 
-function CardControls({ docId }) {
+function CardControls({ docId, front }) {
   const { flashcards, setFlashcards } = useFlashcard();
-  const flashcard = flashcards?.find(fc => fc.docID === docId);
+  const { speak } = useSpeechSynthesis();
   const [showModal, setShowModal] = useState(false);
 
+  const flashcard = flashcards?.find(fc => fc.docID === docId);
+ 
   const handleEditClick = (e) => {
     e.stopPropagation();
     setShowModal(true);
   }
   const handleSpeakClick = (e) => {
     e.stopPropagation();
-    console.log('hi');
+    speak({ text: front ? flashcard.side1 : flashcard.side2 });
   }
-  
+
   const handleStarClick = async (e) => {
     e.stopPropagation();
 
