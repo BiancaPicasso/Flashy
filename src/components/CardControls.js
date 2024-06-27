@@ -65,7 +65,8 @@ function CardControls({ docId, front }) {
   }
 
   const handleCloseAIModal = (e) => {
-    if (e.target.className === 'ai-modal-overlay') {
+    e.stopPropagation();
+    if (e.currentTarget === e.target) {
       setShowAIModal(false);
     }
   }
@@ -82,7 +83,7 @@ function CardControls({ docId, front }) {
           )}
           {showAIModal && (
             <div className="ai-modal-overlay" onClick={handleCloseAIModal}>
-            <AIModal docId={docId} />
+            <AIModal docId={docId} onClose={handleCloseAIModal} />
             </div>
           )}
         </div>
